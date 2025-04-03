@@ -32,12 +32,13 @@ Install-ADDSForest -DomainName $DomainName -SafeModeAdministratorPassword $SafeM
 
 # 5. Créer des OUs
 $OUList = @(
-    "OU=IT,DC=votre,DC=domaine,DC=local",
-    "OU=Finance,DC=votre,DC=domaine,DC=local",
-    "OU=HR,DC=votre,DC=domaine,DC=local"
+    "IT",
+    "Finance",
+    "HR"
 )
 
 foreach ($OU in $OUList) {
-    New-ADOrganizationalUnit -Name $OU.Split(",")[0].Split("=")[1] -Path $OU.Substring(OU.IndexOf(",") + 1)
+    $OUPath = "OU=$OU,DC=votre,DC=domaine,DC=local"
+    New-ADOrganizationalUnit -Name $OU -Path "DC=votre,DC=domaine,DC=local"
+    Write-Host "L'OU $OU a été créé avec succès dans $OUPath" -ForegroundColor Green
 }
-
